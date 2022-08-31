@@ -40,7 +40,8 @@ export default function CreateComponent(
       html(html, ...keys) {
         let template = '';
         html.forEach((string, i) => {
-          let key = keys[i]?.();
+          let key = keys[i];
+          if (keys[i] instanceof Function) key = keys[i]();
           template += string + (key ?? '');
         });
 
@@ -53,7 +54,6 @@ export default function CreateComponent(
       }
 
       attributeChangedCallback() {
-        console.log('component updated');
         this.refresh();
       }
 
@@ -61,13 +61,7 @@ export default function CreateComponent(
         return [ 'state' ];
       }
 
-      disconnectedCallback() {
-        console.log('component ended');
-      }
-
       connectedCallback() {
-        console.log('component started');
-
         const template = document
           .createRange()
           .createContextualFragment(this.template);

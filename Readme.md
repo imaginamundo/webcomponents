@@ -133,8 +133,45 @@ myComponent.state.stateName = 'New state value';
 myComponent.refresh();
 ```
 
+# Nesting components
+
+There are no secrets on nesting components, since it uses the default browser API it works just putting the html tag inside the other component. As long as both components are initialized on the page, it will work. See the example bellow.
+
+```javascript
+// nested-component.js
+import CreateComponent from "webcomponent";
+
+CreateComponent(({ html }) => {
+  return html`
+    <p>
+      Hello
+      <!-- Just use the component that were created on the other file -->
+      <nesting-component who="world"></nesting-component>
+    </p>
+    
+  `;
+}, 'nested-component');
+
+// nesting-component
+import CreateComponent from "webcomponent";
+
+CreateComponent(({ attributes, html }) => {
+  const who = attributes.who.value;
+
+  return html`
+    <b>${ who }</b>
+  `;
+}, 'nesting-component');
+```
+
+```html
+<!-- Use the parent component and the siblings will also appear -->
+<nested-component></nested-component>
+```
+
 # For the future
 
-- [ ] Create a way to make the component server side rendered.
+- [ ] Create a way to make the component server side rendered;
+- [ ] Find a way to make inputs work correctly;
 
-For now it is it :D Thanks for reading.
+That's all for now, thanks for reading.
