@@ -5,24 +5,34 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Web Components</title>
-  <script src="./script/mod.js" type="module"></script>
   <script type="importmap">
     {
       "imports": {
-        "@webcomponent": "https://raw.githubusercontent.com/imaginamundo/webcomponents/main/mod.js"
+        "webcomponent": "https://imaginamundo.github.io/webcomponents/mod.js"
       }
     }
-  </script>
+    </script>
+  <script src="./script/mod.js" type="module"></script>
   <style>
     html {
       font-family: sans-serif;
     }
+    main {
+      max-width: 900px;
+      margin-inline: auto;
+    }
   </style>
 </head>
 <body>
-  <h1>Testing Web Components</h1>
-  <web-component start="0"></web-component>
-  <hr />
-  <web-component start="5"></web-component>
+  <main>
+    <h1>Testing <a href="https://github.com/imaginamundo/webcomponents">WebComponents</a></h1>
+    <counter-clicker start="0"></counter-clicker>
+    <hr />
+    <counter-clicker start="5"></counter-clicker>
+    <hr />
+    <type-something></type-something>
+    <hr />
+    <multiple-update></multiple-update>
+  </main>
 </body>
 </html>

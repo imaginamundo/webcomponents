@@ -23,6 +23,11 @@ export default function CreateComponent(
       functions = {};
       template = '';
       templateLiteral = {};
+      refresh = () => {
+        const { template } = this.html(this.templateLiteral.html, ...this.templateLiteral.keys);
+        this.shadowRoot.innerHTML = template;
+        this.functions.init(this);
+      }
   
       constructor() {
         super();
@@ -49,17 +54,11 @@ export default function CreateComponent(
 
       attributeChangedCallback() {
         console.log('component updated');
-        this.updateComponent();
+        this.refresh();
       }
 
       static get observedAttributes() {
         return [ 'state' ];
-      }
-
-      updateComponent() {
-        const { template } = this.html(this.templateLiteral.html, ...this.templateLiteral.keys);
-        this.shadowRoot.innerHTML = template;
-        this.functions.init(this);
       }
 
       disconnectedCallback() {

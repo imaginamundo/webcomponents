@@ -1,9 +1,9 @@
-import CreateComponent from "@webcomponent";
+import CreateComponent from "webcomponent";
 
 CreateComponent(({ state, attributes, functions, html }) => {
   state.counter = parseInt(attributes.start.value);
 
-  functions.init = ({ shadowRoot, state }) => {
+  functions.init = ({ shadowRoot }) => {
     const increase = shadowRoot.getElementById('increase');
     const decrease = shadowRoot.getElementById('decrease');
     
@@ -19,5 +19,5 @@ CreateComponent(({ state, attributes, functions, html }) => {
     <p>Counter: <span>${ state.get('counter') }</span></p>
     <p><button id="decrease">Decrease -</button> <button id="increase">Increase +</button></p>
   `;
-}, 'web-component');
+}, 'counter-clicker');
 
