@@ -1,10 +1,10 @@
-# Webcomponents
+# webcomponents
 
 A small function to make it easier to create webcomponents with a simple state solution.
 
 # Example
 
-https://imaginamundo.github.io/webcomponents/example/
+[https://imaginamundo.github.io/webcomponents/example/](https://imaginamundo.github.io/webcomponents/example/)
 
 # How to use it
 
@@ -134,6 +134,6 @@ myComponent.refresh();
 
 # For the future
 
-Create a way to make the component server side rendered.
+- [ ] Create a way to make the component server side rendered.
 
 For now it is it :D Thanks for reading.
