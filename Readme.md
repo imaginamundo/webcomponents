@@ -5,6 +5,7 @@ A small function to make it easier to create webcomponents with a simple state s
 # Example
 
 [https://imaginamundo.github.io/webcomponents/example/](https://imaginamundo.github.io/webcomponents/example/)
+does not work on safari because I use import maps.
 
 # How to use it
 
