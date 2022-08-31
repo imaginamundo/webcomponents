@@ -152,7 +152,7 @@ CreateComponent(({ html }) => {
   `;
 }, 'nested-component');
 
-// nesting-component
+// nesting-component.js
 import CreateComponent from "webcomponent";
 
 CreateComponent(({ attributes, html }) => {
