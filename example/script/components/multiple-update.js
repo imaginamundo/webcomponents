@@ -19,5 +19,6 @@ CreateComponent(({ state, functions, html, refresh }) => {
       <li>${ state.get('age') }</li>
     </ul>
     <button>Change</button>
+    <p><a href="https://github.com/imaginamundo/webcomponents/blob/main/example/script/components/multiple-update.js">Repository link</a></p>
   `;
 }, 'multiple-update');
