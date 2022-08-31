@@ -18,6 +18,7 @@ CreateComponent(({ state, attributes, functions, html }) => {
   return html`
     <p>Counter: <span>${ state.get('counter') }</span></p>
     <p><button id="decrease">Decrease -</button> <button id="increase">Increase +</button></p>
+    <p><a href="https://github.com/imaginamundo/webcomponents/blob/main/example/script/components/counter-clicker.js">Repository link</a></p>
   `;
 }, 'counter-clicker');
 
