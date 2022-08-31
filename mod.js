@@ -1,0 +1,85 @@
+export default function CreateComponent(
+  componentFunction,
+  componentName
+) {
+  customElements.define(componentName,
+    class extends HTMLElement {
+      privateKeys = new Set([ 'set', 'get' ]);
+      state = {
+        set: (key, value) => {
+          if (this.privateKeys.has(key)) {
+            throw new Error(`Key ${ key } cannot be used. It is reserved for the create component function`);
+          }
+
+          this.state[key] = value;
+          this.updateStateIdAttribute();
+        },
+        get(key) {
+          return () => {
+            return this[key];
+          };
+        }
+      };
+      functions = {};
+      template = '';
+      templateLiteral = {};
+  
+      constructor() {
+        super();
+
+        const { template, templateLiteral } = componentFunction(this); 
+        this.template = template;
+        this.templateLiteral = templateLiteral;
+      }
+
+      html(html, ...keys) {
+        let template = '';
+        html.forEach((string, i) => {
+          let key = keys[i]?.();
+          template += string + (key ?? '');
+        });
+
+        return { template, templateLiteral: { html, keys }  };
+      }
+
+      updateStateIdAttribute() {
+        const id = parseInt(this.attributes.state?.value || 0);
+        this.setAttribute('state', id + 1);
+      }
+
+      attributeChangedCallback() {
+        console.log('component updated');
+        this.updateComponent();
+      }
+
+      static get observedAttributes() {
+        return [ 'state' ];
+      }
+
+      updateComponent() {
+        const { template } = this.html(this.templateLiteral.html, ...this.templateLiteral.keys);
+        this.shadowRoot.innerHTML = template;
+        this.functions.init(this);
+      }
+
+      disconnectedCallback() {
+        console.log('component ended');
+      }
+
+      connectedCallback() {
+        console.log('component started');
+
+        const template = document
+          .createRange()
+          .createContextualFragment(this.template);
+  
+        this.attachShadow({ mode: 'open' })
+            .appendChild(
+              template.cloneNode(true)
+            );
+
+        this.functions.init?.(this);
+      }
+    }
+  );
+}

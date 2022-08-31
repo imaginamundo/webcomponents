@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Components</title>
+  <script src="./script/mod.js" type="module"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "@webcomponent": "https://raw.githubusercontent.com/imaginamundo/webcomponents/main/mod.js"
+      }
+    }
+  </script>
+  <style>
+    html {
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <h1>Testing Web Components</h1>
+  <web-component start="0"></web-component>
+  <hr />
+  <web-component start="5"></web-component>
+</body>
+</html>
