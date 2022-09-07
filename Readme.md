@@ -170,7 +170,7 @@ CreateComponent(({ attributes, html }) => {
 
 # For the future
 
-- [ ] Create a way to make the component server side rendered;
+- [ ] Create a way to make the component server side rendered (using [declarative shadow DOM](https://web.dev/declarative-shadow-dom/));
 - [ ] Find a way to make inputs work correctly;
 
 That's all for now, thanks for reading.
