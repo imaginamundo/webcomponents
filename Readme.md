@@ -181,7 +181,7 @@ Component("nesting-component", ({ attributes }) => {
 # For the future
 
 - [ ] Create a way to make the component server side rendered;
-- [ ] Instead of reloading the whole page, add the listeners to upgrade the
-      component.
+- [ ] Instead of reloading the whole component, add the listeners to upgrade the
+      specific part of the component.
 
 That's all for now, thanks for reading.
