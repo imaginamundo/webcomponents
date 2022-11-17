@@ -42,7 +42,7 @@ export default function Component(
           ...this.templateLiteral.values,
         );
         this.shadowRoot.innerHTML = template;
-        if (this.onMount) this.onMount(this);
+        this.onMount?.(this);
       };
 
       constructor() {
@@ -70,17 +70,20 @@ export default function Component(
       }
 
       connectedCallback() {
-        const template = document
-          .createRange()
-          .createContextualFragment(this.template);
+        if (!this.shadowRoot) {
+          const template = document
+            .createRange()
+            .createContextualFragment(this.template);
+  
+          this
+            .attachShadow({ mode: "open" })
+            .appendChild(
+              template.cloneNode(true),
+            );
+        }
 
-        this
-          .attachShadow({ mode: "open" })
-          .appendChild(
-            template.cloneNode(true),
-          );
 
-        if (this.onMount) this.onMount(this);
+        this.onMount?.(this);
       }
     },
   );
