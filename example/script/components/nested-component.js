@@ -1,6 +1,6 @@
-import CreateComponent from "webcomponent";
+import Component, { html } from "webcomponent";
 
-CreateComponent(({ html }) => {
+Component("nested-component", () => {
   return html`
     <p>
       Hello nested
@@ -8,4 +8,4 @@ CreateComponent(({ html }) => {
     </p>
     <p><a href="https://github.com/imaginamundo/webcomponents/blob/main/example/script/components/nested-component.js">Repository link</a></p>
   `;
-}, 'nested-component');
+});

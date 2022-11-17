@@ -1,9 +1,7 @@
-import CreateComponent from "webcomponent";
+import Component, { html } from "webcomponent";
 
-CreateComponent(({ attributes, html }) => {
+Component("nesting-component", ({ attributes }) => {
   const who = attributes.who.value;
 
-  return html`
-    <b>${ who }</b>
-  `;
-}, 'nesting-component');
+  return html`<b>${who}</b>`;
+});

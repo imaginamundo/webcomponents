@@ -1,6 +1,7 @@
 # webcomponents
 
-A small function to make it easier to create webcomponents with a simple state solution.
+A small function to make it easier to create webcomponents with a simple state
+solution.
 
 # Example
 
@@ -8,35 +9,40 @@ A small function to make it easier to create webcomponents with a simple state s
 
 # How to use it
 
-Create your component using the function CreateComponent:
+Create your component using the function Component:
 
 `./script/my-component.js`:
-```javascript
-import CreateComponent from "https://imaginamundo.github.io/webcomponents/mod.js";
 
-CreateComponent(({ state, attributes, functions, html }) => {
+```javascript
+import Component, {
+  html,
+  onMount,
+} from "https://imaginamundo.github.io/webcomponents/mod.js";
+
+// Defining your component name.
+Component("my-component", ({ state, attributes }) => {
   // Initialize the state
   state.counter = parseInt(attributes.start.value);
 
-  // functions.init will be triggered at the component render
-  functions.init = ({ shadowRoot }) => {
-    const button = shadowRoot.querySelector('button');
-    
-    button.addEventListener('click', () => {
+  // onMount will be triggered at the component render
+  onMount(({ shadowRoot }) => {
+    const button = shadowRoot.querySelector("button");
+
+    button.addEventListener("click", () => {
       // Update the state
-      state.set('counter', state.counter + 1);
+      state.set("counter", state.counter + 1);
     });
-  };
+  });
 
   // Printing the state
-  return html`<button>Clicks: ${ state.get('counter') }</button>`;
-}, 'my-component');
-// Defining your component name.
+  return html`<button>Clicks: ${state.get("counter")}</button>`;
+});
 ```
 
 After that, you can use it on your HTML like this:
 
 `./index.html`:
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -60,59 +66,60 @@ The state object give you 2 functions: `get` & `set`.
 
 # Updating the component
 
-When you want to update your component, just use the `state.set('state-name', 'state value')`. See the example bellow:
+When you want to update your component, just use the
+`state.set('state-name', 'state value')`. See the example bellow:
 
 ```javascript
-import CreateComponent from "webcomponent";
+import Component, { html, onMount } from "webcomponent";
 
-CreateComponent(({ state, functions, html }) => {
+Component("type-something", ({ state }) => {
   // Add a key to the state object does not update the component,
   // but in this case, we don't need. The first render will always
   // look at what is the current state.
-  state.type = '';
+  state.type = "";
 
-  functions.init = ({ shadowRoot }) => {
-    const input = shadowRoot.querySelector('input');
-    input.addEventListener('input', (e) => {
+  onMount(({ shadowRoot }) => {
+    const input = shadowRoot.querySelector("input");
+    input.addEventListener("input", (e) => {
       // Using state.set we force the component to update
-      state.set('type', e.target.value);
+      state.set("type", e.target.value);
     });
     input.focus();
-  };
+  });
 
-  return html`<input type="text" /> ${ state.get('type') }`;
-}, 'type-something');
+  return html`<input type="text" /> ${state.get("type")}`;
+});
 ```
 
 We can also force a re-render of the component:
 
 ```javascript
-import CreateComponent from "webcomponent";
+import Compoenent, { html, onMount } from "webcomponent";
 
-CreateComponent(({ state, functions, html, refresh }) => {
-  state.name = 'Jose';
-  state.age  = 18; 
+Component("multiple-update", ({ state, functions, refresh }) => {
+  state.name = "Jose";
+  state.age = 18;
 
-  functions.init = ({ shadowRoot }) => {
-    const button = shadowRoot.querySelector('button');
-    button.addEventListener('click', () => {
+  onMount(({ shadowRoot }) => {
+    const button = shadowRoot.querySelector("button");
+    button.addEventListener("click", () => {
       // Update multiple states
-      state.name = 'Maria';
+      state.name = "Maria";
       state.age = 20;
 
       // Force re-render
       refresh();
     });
-  };
+  });
 
   return html`
     <ul>
-      <li>${ state.get('name') }</li>
-      <li>${ state.get('age') }</li>
+      <li>${state.get("name")}</li>
+      <li>${state.get("age")}</li>
     </ul>
     <button>Change</button>
   `;
-}, 'multiple-update');
+});
 ```
 
 If you want to update a component from outside, you can do it like this:
@@ -123,10 +130,10 @@ If you want to update a component from outside, you can do it like this:
 
 ```javascript
 // Grab the component on some way, on this case is byt its id
-const myComponent = document.getElementById('my-component');
+const myComponent = document.getElementById("my-component");
 
 // Update the change from outside
-myComponent.state.stateName = 'New state value';
+myComponent.state.stateName = "New state value";
 
 // Force its update
 myComponent.refresh();
@@ -134,13 +141,16 @@ myComponent.refresh();
 
 # Nesting components
 
-There are no secrets on nesting components, since it uses the default browser API it works just putting the html tag inside the other component. As long as both components are initialized on the page, it will work. See the example bellow.
+There are no secrets on nesting components, since it uses the default browser
+API it works just putting the html tag inside the other component. As long as
+both components are initialized on the page, it will work. See the example
+bellow.
 
 ```javascript
 // nested-component.js
-import CreateComponent from "webcomponent";
+import Component, { html } from "webcomponent";
 
-CreateComponent(({ html }) => {
+Component("nested-component", () => {
   return html`
     <p>
       Hello
@@ -149,18 +159,18 @@ CreateComponent(({ html }) => {
     </p>
     
   `;
-}, 'nested-component');
+});
 
 // nesting-component.js
-import CreateComponent from "webcomponent";
+import Component, { html } from "webcomponent";
 
-CreateComponent(({ attributes, html }) => {
+Component("nesting-component", ({ attributes }) => {
   const who = attributes.who.value;
 
   return html`
-    <b>${ who }</b>
+    <b>${who}</b>
   `;
-}, 'nesting-component');
+});
 ```
 
 ```html
@@ -170,7 +180,8 @@ CreateComponent(({ attributes, html }) => {
 
 # For the future
 
-- [ ] Create a way to make the component server side rendered (using [declarative shadow DOM](https://web.dev/declarative-shadow-dom/));
-- [ ] Find a way to make inputs work correctly;
+- [ ] Create a way to make the component server side rendered;
+- [ ] Instead of reloading the whole page, add the listeners to upgrade the
+      component.
 
 That's all for now, thanks for reading.

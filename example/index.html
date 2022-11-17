@@ -9,7 +9,7 @@
   <script type="importmap">
     {
       "imports": {
-        "webcomponent": "https://imaginamundo.github.io/webcomponents/mod.js"
+        "webcomponent": "../mod.js"
       }
     }
     </script>
@@ -36,6 +36,16 @@
     <multiple-update></multiple-update>
     <hr />
     <nested-component></nested-component>
+    <hr />
+    <h2>What the future component should look (server rendered):</h2>
+    <p>Change network throttling to a very slow speed to see it rendered before the other components, while still not dynamic, because it need to download the component resources to add all the listeners to the component.</p>
+    <counter-clicker start="0">
+      <shadow-root>
+        <p>Counter: <span>0</span></p>
+        <p><button id="decrease">Decrease -</button> <button id="increase">Increase +</button></p>
+        <p><a href="https://github.com/imaginamundo/webcomponents/blob/main/example/script/components/counter-clicker.js">Repository link</a></p>
+      </shadow-root>
+    </counter-clicker>
   </main>
 </body>
 </html>
