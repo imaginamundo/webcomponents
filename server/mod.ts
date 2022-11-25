@@ -1,65 +1,88 @@
-type TemplateKey =
+type TemplateStringsValues =
   | string
   | number
   | null
   | undefined
-  | (() => string | number | null | undefined);
+  | (() => string | number | null | undefined | void);
+
+interface HTMLReturn {
+  template: string;
+  templateLiteral: {
+    strings: TemplateStringsArray;
+    values: TemplateStringsValues[];
+  };
+}
+
+let mountFunction: ((HTMLElement: HTMLElement) => void) | null = null;
+
+export function onMount(fn: (HTMLElement: HTMLElement) => void): void {
+  mountFunction = fn;
+}
 
 export function html(
   strings: TemplateStringsArray,
-  ...keys: TemplateKey[]
-): { template: string; strings: TemplateStringsArray; keys: TemplateKey[] } {
-  const template = String.raw(
-    { raw: strings },
-    keys.map((key) => {
-      if (key instanceof Function) return key();
-      return key;
-    }),
-  );
+  ...values: TemplateStringsValues[]
+): HTMLReturn {
+  const parsedValues = values.map((value) => {
+    if (value instanceof Function) return value();
+    return value;
+  });
+  const template = String.raw({ raw: strings }, ...parsedValues);
 
-  return { template, strings, keys };
+  return { template, templateLiteral: { strings, values } };
 }
 
-export function CreateComponent(
-  componentName,
-  componentFunction,
+export default function Component(
+  componentName: string,
+  componentFunction: (state, attributes) => Strin,
 ) {
   customElements.define(
     componentName,
     class extends HTMLElement {
       state = {
-        set: (key: string, value: string | number | null | undefined) => {
+        set: (key, value) => {
           this.state[key] = value;
           this.updateStateIdAttribute();
         },
-        get(key: string) {
+        get(key) {
           return () => this[key];
         },
+      };
+
+      onMount: (() => void) | null = null;
+      template = "";
+      templateLiteral: {
+        strings: TemplateStringsArray;
+        values: TemplateStringsValues[];
+      } = {};
+
+      refresh = () => {
+        const { template } = html(
+          this.templateLiteral.strings,
+          ...this.templateLiteral.values,
+        );
+        this.shadowRoot.innerHTML = template;
+        this.onMount?.(this);
       };
 
       constructor() {
         super();
 
-        const { template, strings, keys } = componentFunction(this);
+        const { template, templateLiteral } = componentFunction(this);
         this.template = template;
-        this.strings = strings;
-        this.keys = keys;
+        this.templateLiteral = templateLiteral;
+
+        this.onMount = mountFunction;
+        mountFunction = null;
       }
 
-      // Template literal data
-      template: string;
-      strings: TemplateStringsArray;
-      keys: (Function | string | number | null | undefined)[];
-
-      init: () => void;
-
       updateStateIdAttribute() {
-        const id = Number(this.attributes.state?.value) || 0;
+        const id = Number(this.attributes.state?.value || 0);
         this.setAttribute("state", id + 1);
       }
 
       attributeChangedCallback() {
-        // this.refresh();
+        this.refresh();
       }
 
       static get observedAttributes() {
@@ -67,16 +90,19 @@ export function CreateComponent(
       }
 
       connectedCallback() {
-        const template = document
-          .createRange()
-          .createContextualFragment(this.template);
+        if (!this.shadowRoot) {
+          const template = document
+            .createRange()
+            .createContextualFragment(this.template);
 
-        this.attachShadow({ mode: "open" })
-          .appendChild(
-            template.cloneNode(true),
-          );
+          this
+            .attachShadow({ mode: "open" })
+            .appendChild(
+              template.cloneNode(true),
+            );
+        }
 
-        this.init?.(this);
+        this.onMount?.(this);
       }
     },
   );

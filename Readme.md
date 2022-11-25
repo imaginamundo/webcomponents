@@ -180,8 +180,15 @@ Component("nesting-component", ({ attributes }) => {
 
 # For the future
 
-- [ ] Create a way to make the component server side rendered;
-- [ ] Instead of reloading the whole component, add the listeners to upgrade the
-      specific part of the component.
+## Server
+
+- [ ] Render on server;
+- [ ] Use Deno-dom to parse html and test how it will work with webcomponents;
+- [ ] Create a file that contains all the components per page;
+- [ ] Fix typescript on mod.ts;
+
+## Client
+
+- [ ] Fix selector to update dom and not reload the whole component;
 
 That's all for now, thanks for reading.

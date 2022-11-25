@@ -14,6 +14,7 @@
     }
     </script>
   <script src="./script/mod.js" type="module"></script>
+  <script src="http://fiduswriter.github.io/diffDOM/browser/diffDOM.js"></script>
   <style>
     html {
       font-family: sans-serif;
@@ -39,6 +40,7 @@
     <hr />
     <h2>What the future component should look (server rendered):</h2>
     <p>Change network throttling to a very slow speed to see it rendered before the other components, while still not dynamic, because it need to download the component resources to add all the listeners to the component.</p>
+    <!-- When on server side render, return the component HTML mounted -->
     <counter-clicker start="0">
       <template shadowroot="open">
         <p>Counter: <span>0</span></p>
