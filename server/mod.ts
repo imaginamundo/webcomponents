@@ -13,6 +13,13 @@ interface HTMLReturn {
   };
 }
 
+interface ComponentFunctionProps extends HTMLElement {
+  state: {
+    set: (key: string, value: any) => void;
+    get: (key: string) => TemplateStringsValues;
+  };
+}
+
 let mountFunction: ((HTMLElement: HTMLElement) => void) | null = null;
 
 export function onMount(fn: (HTMLElement: HTMLElement) => void): void {
@@ -34,8 +41,10 @@ export function html(
 
 export default function Component(
   componentName: string,
-  componentFunction: (state, attributes) => Strin,
-) {
+  componentFunction: (
+    { state, attributes }: ComponentFunctionProps,
+  ) => HTMLReturn,
+): void {
   customElements.define(
     componentName,
     class extends HTMLElement {
@@ -49,7 +58,7 @@ export default function Component(
         },
       };
 
-      onMount: (() => void) | null = null;
+      onMount: ((props: ComponentFunctionProps) => void) | null = null;
       template = "";
       templateLiteral: {
         strings: TemplateStringsArray;
