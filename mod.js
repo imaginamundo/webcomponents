@@ -1,4 +1,4 @@
-// import { html } from 'https://unpkg.com/uhtml';
+// import udomdiff from "https://unpkg.com/udomdiff/esm/index.js";
 
 /**
  * # OnMount store and function
@@ -64,6 +64,25 @@ export default function Component(
           this.templateLiteral.strings,
           ...this.templateLiteral.values,
         );
+
+        // const parsedTemplate = stringToHtml(template);
+
+        // const node = (node, info) => {
+        //   console.log({ node, info });
+        //   console.log({
+        //     templateChildNodes: parsedTemplate.childNodes,
+        //     shadowRootChildNodes: this.shadowRoot.childNodes,
+        //   });
+        //   return node;
+        // }
+
+        // const futureNodes = udomdiff(
+        //   this.shadowRoot,                  // parent node where changes will happen
+        //   this.shadowRoot.childNodes,       // array of current nodes
+        //   parsedTemplate.childNodes,        // array of future nodes
+        //   node,                             // callback to retrieve the node
+        // );
+
         this.shadowRoot.innerHTML = template;
         this.onMount?.(this);
       };
