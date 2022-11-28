@@ -1,4 +1,5 @@
 // import udomdiff from "https://unpkg.com/udomdiff/esm/index.js";
+import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
 
 /**
  * # OnMount store and function
@@ -22,6 +23,10 @@ export function html(strings, ...values) {
     if (value instanceof Function) return value();
     return value;
   });
+  const template = String.raw({ raw: strings }, ...parsedValues);
+
+  // Server side rendered (or just return a string and hydrate on browser 🤷‍♂️)
+  if ("Deno" in window) return template;
 
   return { template, templateLiteral: { strings, values } };
 }

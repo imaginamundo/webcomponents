@@ -15,7 +15,7 @@ function urlPathnameFromPath(path: string) {
   splittedRoute.pop();
   route = splittedRoute.join(".");
 
-  // Remove index
+  // Remove /main
   if (route === "/main") route = "/";
   if (route.endsWith("/main")) route = route.slice(0, route.length - 5);
 
@@ -39,6 +39,7 @@ async function routesFromDirectory(directory: string) {
 }
 
 const routes = await routesFromDirectory("./app");
+console.log(routes);
 
 function notFoundResponse(req: Request): Response {
   return new Response(`${req.url} not found`, { status: 404 });
@@ -50,7 +51,9 @@ async function pageResponse(route: Route): Promise<Response> {
 
   if (body instanceof Response) return body;
 
-  return new Response(body);
+  return new Response(body, {
+    headers: new Headers({ "content-type": "text/html; charset=UTF-8" }),
+  });
 }
 
 async function handler(req: Request): Promise<Response> {

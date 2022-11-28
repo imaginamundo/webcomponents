@@ -1,5 +1,5 @@
-import { CreateComponent, html } from "../deps.ts";
+import { html } from "../deps.ts";
 
-CreateComponent("page", () => {
+export default function Page() {
   return html`<h1>Hello, world!</h1>`;
-});
+}
