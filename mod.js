@@ -23,6 +23,8 @@ export function html(strings, ...values) {
     return value;
   });
 
+  const template = String.raw({ raw: strings }, ...parsedValues);
+
   return { template, templateLiteral: { strings, values } };
 }
 
